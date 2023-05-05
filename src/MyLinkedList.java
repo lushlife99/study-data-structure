@@ -1,0 +1,244 @@
+import java.util.NoSuchElementException;
+
+public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
+
+    private Node head;
+    private Node tail;
+    private int size;
+
+
+    @Override
+    public Node<E> search(int index) {
+        if(index < 0 || size - 1 < index)
+            throw new IndexOutOfBoundsException("인덱스 오류");
+
+        Node node = head;
+        for (int i = 0; i < index; i++) {
+            node = node.next;
+        }
+
+
+        return node;
+    }
+
+    @Override
+    public void addFirst(E value) {
+        Node node = new Node(value);
+        if(isEmpty()){
+            head = node;
+            tail = node;
+            size++;
+            return;
+        }
+
+        node.next = head;
+        head = node;
+        size++;
+    }
+
+    @Override
+    public void addLast(E value) {
+        Node node = new Node(value);
+
+        if(isEmpty()){
+            head = node;
+            tail = node;
+            size++;
+            return;
+        }
+
+        if(size == 1){
+            tail = node;
+            head.next = node;
+            size++;
+            return;
+        }
+
+        tail.next = node;
+        tail = node;
+        size++;
+    }
+
+    @Override
+    public E remove() {
+        if(isEmpty())
+            throw new NoSuchElementException();
+
+        Node<E> node = head;
+        E returnData = (E)head.data;
+        size--;
+
+        if(isEmpty()){
+            head = null;
+            tail = null;
+            return returnData;
+        }
+
+        head = head.next;
+        return returnData;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return toArray((E[]) new Object[size]);
+    }
+
+
+    public E[] toArray(E[] a) {
+
+        Node<E> node = head;
+        int iterLength;
+
+        if(size <= a.length)
+            iterLength = size;
+        else
+            iterLength = a.length;
+
+        for (int i = 0; i < iterLength; i++) {
+            a[i] = (E) node.data;
+            node = node.next;
+        }
+        return a;
+    }
+
+    @Override
+    public boolean add(E value) {
+        Node<E> node = new Node<>(value);
+
+        if(isEmpty()){
+            head = node;
+            tail = node;
+
+        }
+        else {
+            tail.next = node;
+            tail = node;
+        }
+        size++;
+        return true;
+    }
+
+    @Override
+    public void add(int index, E value) {
+        Node<E> node = new Node<>(value);
+        Node<E> search = search(index-1);
+        node.next = search.next;
+        search.next = node;
+        size++;
+    }
+
+    @Override
+    public E remove(int index) {
+        if(index == 0){
+            return remove();
+        }
+
+
+        Node<E> search = search(index-1);
+        E returnData = (E)search.next.data;
+        if(null == search.next)
+            throw new IndexOutOfBoundsException("인덱스 오류");
+
+        if(null != search.next.next){
+            search.next = search.next.next;
+        }
+        else{
+            search.next = null;
+            tail = search;
+        }
+        size--;
+        return returnData;
+    }
+
+    @Override
+    public boolean remove(Object value) {
+        if(!contains(value))
+            return false;
+
+        int index = indexOf(value);
+        remove(index);
+        return true;
+    }
+
+    @Override
+    public E get(int index) {
+        return search(index).data;
+    }
+
+    @Override
+    public void set(int index, E value) {
+        search(index).data = value;
+    }
+
+    @Override
+    public boolean contains(Object value) {
+        Node node = head;
+        while(node != null){
+            if(node.data.equals(value))
+                return true;
+
+            node = node.next;
+        }
+        return false;
+    }
+
+    @Override
+    public int indexOf(Object value) {
+        if(!contains(value))
+            throw new NoSuchElementException("일치하는 요소가 없음.");
+
+        Node node = head;
+        int index = -1;
+        for(int i = 0; i < size; i++){
+            if(node.data.equals(value)){
+                index = i;
+                break;
+            }
+            node = node.next;
+        }
+
+        return index;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        if(size == 0)
+            return true;
+
+        return false;
+    }
+
+    @Override
+    public void clear() {
+        Node node = head;
+        Node nextNode = head;
+
+        while(nextNode != null){
+            node = nextNode;
+            nextNode = node.next;
+            node = null;
+        }
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    class Node<E> {
+        E data;
+        Node<E> next;
+
+        public Node(){
+
+        }
+
+        public Node(E data){
+            this.data = data;
+        }
+
+    }
+}
