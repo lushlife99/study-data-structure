@@ -10,7 +10,8 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
 
     @Override
     public Node search(int index) {
-        checkIndex(index);
+        if(isEmpty() || index < 0 || index >= size)
+            throw new IndexOutOfBoundsException("부적절한 인덱스");
 
         Node node;
         if(index < size/2) {
@@ -28,7 +29,6 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
         }
         return node;
     }
-
     @Override
     public void addFirst(E value) {
 
@@ -60,11 +60,13 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
         if(size == 1){
             tail = node;
             head.next = node;
+            node.prev = head;
             size++;
             return;
         }
 
         tail.next = node;
+        node.prev = tail;
         tail = node;
         size++;
     }
@@ -92,21 +94,31 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
 
     @Override
     public int lastIndexOf(Object o) {
-        if(!contains(o))
-            throw new NoSuchElementException("없는 요소입니다.");
-
         Node<E> node = tail;
-        int index = size-1;
-        while(!node.data.equals(o)){
-            index--;
+        for(int index = size-1; index >=0; index--){
+            if(node.data.equals(o))
+                return index;
+
             node = node.prev;
         }
-        return index;
+        throw new NoSuchElementException("없는 요소입니다.");
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
+    public <E> E[] toArray(E[] a) {
+
+        int iterLength;
+        if(size <= a.length)
+            iterLength = size;
+        else
+            iterLength = a.length;
+
+        Node<E> node = head;
+        for (int i = 0; i < iterLength; i++) {
+            a[i] = (E) node.data;
+            node = node.next;
+        }
+        return a;
     }
 
     @Override
@@ -117,10 +129,12 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
 
     @Override
     public void add(int index, E value) {
-        checkIndexForAdd(index);
+        if(index < 0 || index > size)
+            throw new IndexOutOfBoundsException("부적절한 인덱스");
 
-        if(index == size-1){
+        if(index == size){
             add(value);
+            return;
         }
         Node<E> node = new Node<>(value);
         Node search = search(index);
@@ -128,12 +142,11 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
         node.next = search;
         search.prev.next = node;
         search.prev = node;
+        size++;
     }
 
     @Override
     public E remove(int index) {
-        checkIndex(index);
-
         Node search = search(index);
         E returnData = (E)search.data;
         if(index == 0){
@@ -169,21 +182,24 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
 
     @Override
     public E get(int index) {
-        checkIndex(index);
-
         return (E)search(index).data;
     }
 
     @Override
     public void set(int index, E value) {
-        checkIndex(index);
-
         Node node = search(index);
         node.data = value;
     }
 
     @Override
     public boolean contains(Object value) {
+        Node<E> node = head;
+
+        for(int i = 0; i < size; i++){
+            if(node.data.equals(value))
+                return true;
+        }
+
         return false;
     }
 
@@ -197,19 +213,16 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
      */
     @Override
     public int indexOf(Object value) {
-
         if(isEmpty())
             throw new NoSuchElementException("없는 요소입니다.");
 
         Node<E> node = head;
-
         for(int index = 0; index < size; index++){
             if(node.data.equals(value)){
                 return index;
             }
             node = node.next;
         }
-
         throw new NoSuchElementException("없는 요소입니다.");
     }
 
@@ -251,15 +264,7 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
-    }
-    private void checkIndexForAdd(int index){
-        if(index < 0 || index > size)
-            throw new IndexOutOfBoundsException("부적절한 인덱스");
-    }
-    private void checkIndex(int index){ //get, set, remove, indexOf와 같은 함수들의 예외처리.
-        if(isEmpty() || index <= 0 || index >= size)
-            throw new IndexOutOfBoundsException("부적절한 인덱스");
+        return toArray((E[]) new Object[size]);
     }
 
     class Node<E> {

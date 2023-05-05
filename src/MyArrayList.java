@@ -160,4 +160,6 @@ public class MyArrayList<E> implements MyList<E> {
             throw new IndexOutOfBoundsException("범위를 벗어난 인덱스");
     }
 
+
+
 }

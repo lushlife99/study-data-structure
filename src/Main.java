@@ -7,13 +7,8 @@ public class Main {
 //        ListTest.arrayListTest();
 //        ListTest.linkedListTest();
 
-        LinkedList<Integer> integers = new LinkedList<>();
-        integers.add(1);
-        integers.add(1);
-        integers.add(1);
-        integers.add(1);
-        integers.add(4, 100);
-        integers.lastIndexOf(1);
+        ListTest.doubleLinkedListTest();
+
     }
 
 
@@ -130,5 +125,66 @@ class ListTest{
         print("remove(Object) Test. Object = "+o+ " return data = "+myLinkedList.remove(o), myLinkedList);
         System.out.println("**************************************** Test Finish ****************************************\n");
     }
+
+    public static void doubleLinkedListTest() throws IOException{
+        MyDoubleLinkedList<Integer> myLinkedList = new MyDoubleLinkedList<>();
+        myLinkedList.add(1);
+        myLinkedList.add(2);
+        myLinkedList.add(3);
+        myLinkedList.add(4);
+        myLinkedList.add(5);
+        myLinkedList.add(6);
+        myLinkedList.add(7);
+        myLinkedList.add(8);
+        myLinkedList.add(9);
+        myLinkedList.add(10);
+        Object o;
+        print("**************************************** DoubleLinkedList Test 초기 값 ****************************************", myLinkedList);
+
+        int index = myLinkedList.size();
+        int value = 11;
+        myLinkedList.add(index, value);
+        print("add(index, value) Test. index = "+index+" value = "+value, myLinkedList);
+
+        value = 12;
+        myLinkedList.addFirst(value);
+        print("addFirst(value) Test. value = "+value, myLinkedList);
+
+        value = 13;
+        myLinkedList.addLast(value);
+        print("addLast(value) Test. value = "+value, myLinkedList);
+
+        print("get(index) Test. index = "+index+" return data = "+myLinkedList.get(index), myLinkedList);
+        index = 8;
+        value = 0;
+        myLinkedList.set(index, value);
+        print("set(index, value) Test. index = "+index+" value = "+value, myLinkedList);
+
+        o = 9;
+        print("indexOf(Object) Test. Object = "+o+" return data = "+myLinkedList.indexOf(o), myLinkedList);
+
+
+        print("remove() Test. return data = "+ myLinkedList.remove(), myLinkedList);
+        print("remove(index) Test. index = "+index+" return data = "+ myLinkedList.remove(11), myLinkedList);
+        print("remove(Object) Test. Object = "+o+ " return data = "+myLinkedList.remove(o), myLinkedList);
+        System.out.println("**************************************** Test Finish ****************************************\n");
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

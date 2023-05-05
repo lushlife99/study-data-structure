@@ -9,15 +9,13 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
 
     @Override
     public Node<E> search(int index) {
-        if(index < 0 || size - 1 < index)
+        if(isEmpty() || index < 0 || size  <= index)
             throw new IndexOutOfBoundsException("인덱스 오류");
 
         Node node = head;
         for (int i = 0; i < index; i++) {
             node = node.next;
         }
-
-
         return node;
     }
 
@@ -120,6 +118,14 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
 
     @Override
     public void add(int index, E value) {
+        if(index < 0 || index > size)
+            throw new IndexOutOfBoundsException("부적절한 인덱스");
+
+        if(index == size){
+            add(value);
+            return;
+        }
+
         Node<E> node = new Node<>(value);
         Node<E> search = search(index-1);
         node.next = search.next;
@@ -132,7 +138,6 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
         if(index == 0){
             return remove();
         }
-
 
         Node<E> search = search(index-1);
         E returnData = (E)search.next.data;
@@ -184,20 +189,17 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
 
     @Override
     public int indexOf(Object value) {
-        if(!contains(value))
-            throw new NoSuchElementException("일치하는 요소가 없음.");
+        if(isEmpty())
+            throw new NoSuchElementException("없는 요소입니다.");
 
         Node node = head;
-        int index = -1;
-        for(int i = 0; i < size; i++){
+        for(int index = 0; index < size; index++){
             if(node.data.equals(value)){
-                index = i;
-                break;
+                return index;
             }
             node = node.next;
         }
-
-        return index;
+        throw new NoSuchElementException("일치하는 요소가 없음.");
     }
 
     @Override
@@ -232,9 +234,7 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
         E data;
         Node<E> next;
 
-        public Node(){
-
-        }
+        public Node(){}
 
         public Node(E data){
             this.data = data;
