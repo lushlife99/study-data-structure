@@ -3,7 +3,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-public class MyArrayList<E> implements MyList<E> {
+public class MyArrayList<E> implements CustomArrayList<E> {
 
     private E[] list;
     private int size;
@@ -12,17 +12,10 @@ public class MyArrayList<E> implements MyList<E> {
         list = (E[]) new Object[10];
         size = 0;
     }
-
-    MyArrayList(int capacity){
-        list = (E[]) new Object[capacity];
-        size = 0;
-    }
-
     MyArrayList(MyArrayList<E> myList){
         list = myList.toArray();
         size = myList.size;
     }
-
 
     @Override
     public boolean add(E value) {
@@ -34,7 +27,8 @@ public class MyArrayList<E> implements MyList<E> {
 
     @Override
     public void add(int index, E value) {
-        indexCheck(index);
+        if(index < 0 || index > size)
+            throw new IndexOutOfBoundsException("범위를 벗어난 인덱스");
 
         ensureCapacity(1);
 
@@ -44,6 +38,23 @@ public class MyArrayList<E> implements MyList<E> {
         list[index] = value;
         size++;
     }
+
+    @Override
+    public void addLast(E value) {
+        ensureCapacity(1);
+        list[size++] = value;
+    }
+
+    @Override
+    public void addFirst(E value) {
+        ensureCapacity(1);
+        for(int i = size-1; i >= 0; i--){
+            list[i+1] = list[i];
+        }
+        list[0] = value;
+        size++;
+    }
+
 
     @Override
     public E remove(int index) {
@@ -60,13 +71,12 @@ public class MyArrayList<E> implements MyList<E> {
 
     @Override
     public boolean remove(Object value) {
-        for(int i = 0; i < size; i++){
-            if(list[i].equals(value)){
-                remove(i);
-                return true;
-            }
-        }
-        return false;
+        int index = indexOf(value);
+        if(index == -1)
+            return false;
+
+        remove(index);
+        return true;
     }
 
     @Override
@@ -93,6 +103,27 @@ public class MyArrayList<E> implements MyList<E> {
     }
 
     @Override
+    public void clear() {
+        list = (E[]) new Object[10];
+        size = 0;
+    }
+
+    public MyArrayList<E> clone(){
+        return new MyArrayList<>(this);
+    }
+
+
+    @Override
+    public int lastIndexOf(Object value) {
+        for(int index = size-1; index >=0; index--){
+            if(value.equals(list[index]))
+                return index;
+        }
+        return -1;
+    }
+
+
+    @Override
     public int indexOf(Object value) {
         for(int i = 0; i < size; i++){
             if(list[i].equals(value))
@@ -114,26 +145,6 @@ public class MyArrayList<E> implements MyList<E> {
         return false;
     }
 
-    /**
-     * 만약 clear에서 list를 null로 만들면?
-     * NPE 떠버림.
-     *
-     * 그럼 사실 생성자와 다를게 없는데.. 코드 재사용
-     */
-
-    @Override
-    public void clear() {
-        list = (E[]) new Object[10];
-        size = 0;
-    }
-
-    public MyArrayList<E> clone(){
-        return new MyArrayList<>(this);
-    }
-
-    public E[] toArray(){
-        return (E[])Arrays.stream(list).toArray();
-    }
 
     /**
      * 자바에 소멸자가 없는데..
@@ -148,18 +159,32 @@ public class MyArrayList<E> implements MyList<E> {
         if(calSize < size + minCapacity)
             calSize *= 2;
 
-        E[] newList = (E[]) new Object[calSize];
-        for(int i = 0; i < size; i++){
-            newList[i] = list[i];
+        list = toArray((E[])new Object[calSize]);
+    }
+
+    public <E> E[]	toArray(E[] a){
+        int iterSize = size;
+        if(a.length < size)
+            iterSize = a.length;
+
+        for(int i = 0; i < iterSize; i++){
+            a[i] = (E) list[i];
         }
-        list = newList;
+        return a;
+    }
+
+    public E[] toArray(){
+        return Arrays.copyOf(list, size);
     }
 
     private void indexCheck(int index){
-        if(index < 0 || index > size)
+        if(index < 0 || index >= size)
             throw new IndexOutOfBoundsException("범위를 벗어난 인덱스");
     }
 
+    @Override
+    public void resize() {
+    }
 
 
 }

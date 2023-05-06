@@ -1,6 +1,6 @@
 import java.util.NoSuchElementException;
 
-public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
+public class MyLinkedList<E> implements CustomLinkedList<E>{
 
     private Node head;
     private Node tail;
@@ -20,6 +20,29 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
     }
 
     @Override
+    public boolean add(E value) {
+        addLast(value);
+        return true;
+    }
+
+    @Override
+    public void add(int index, E value) {
+        if(index < 0 || index > size)
+            throw new IndexOutOfBoundsException("부적절한 인덱스");
+
+        if(index == size){
+            add(value);
+            return;
+        }
+
+        Node<E> node = new Node<>(value);
+        Node<E> search = search(index-1);
+        node.next = search.next;
+        search.next = node;
+        size++;
+    }
+
+    @Override
     public void addFirst(E value) {
         Node node = new Node(value);
         if(isEmpty()){
@@ -28,7 +51,6 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
             size++;
             return;
         }
-
         node.next = head;
         head = node;
         size++;
@@ -36,24 +58,16 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
 
     @Override
     public void addLast(E value) {
-        Node node = new Node(value);
+        Node<E> node = new Node<>(value);
 
         if(isEmpty()){
             head = node;
             tail = node;
-            size++;
-            return;
         }
-
-        if(size == 1){
+        else {
+            tail.next = node;
             tail = node;
-            head.next = node;
-            size++;
-            return;
         }
-
-        tail.next = node;
-        tail = node;
         size++;
     }
 
@@ -62,7 +76,6 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
         if(isEmpty())
             throw new NoSuchElementException();
 
-        Node<E> node = head;
         E returnData = (E)head.data;
         size--;
 
@@ -99,39 +112,7 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
         return a;
     }
 
-    @Override
-    public boolean add(E value) {
-        Node<E> node = new Node<>(value);
 
-        if(isEmpty()){
-            head = node;
-            tail = node;
-
-        }
-        else {
-            tail.next = node;
-            tail = node;
-        }
-        size++;
-        return true;
-    }
-
-    @Override
-    public void add(int index, E value) {
-        if(index < 0 || index > size)
-            throw new IndexOutOfBoundsException("부적절한 인덱스");
-
-        if(index == size){
-            add(value);
-            return;
-        }
-
-        Node<E> node = new Node<>(value);
-        Node<E> search = search(index-1);
-        node.next = search.next;
-        search.next = node;
-        size++;
-    }
 
     @Override
     public E remove(int index) {
@@ -176,7 +157,16 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
     }
 
     @Override
+    public int size() {
+        return size;
+    }
+
+
+    @Override
     public boolean contains(Object value) {
+        if(isEmpty())
+            throw new NoSuchElementException("없는 요소입니다.");
+
         Node node = head;
         while(node != null){
             if(node.data.equals(value))
@@ -199,13 +189,9 @@ public class MyLinkedList<E> implements MyList<E>, CustomLinkedList<E>{
             }
             node = node.next;
         }
-        throw new NoSuchElementException("일치하는 요소가 없음.");
+        return -1;
     }
 
-    @Override
-    public int size() {
-        return size;
-    }
 
     @Override
     public boolean isEmpty() {

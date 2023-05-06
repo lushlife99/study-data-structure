@@ -29,6 +29,30 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
         }
         return node;
     }
+
+    @Override
+    public boolean add(E value) {
+        addLast(value);
+        return true;
+    }
+
+    @Override
+    public void add(int index, E value) {
+        if(index < 0 || index > size)
+            throw new IndexOutOfBoundsException("부적절한 인덱스");
+
+        if(index == size){
+            add(value);
+            return;
+        }
+        Node<E> node = new Node<>(value);
+        Node search = search(index);
+        node.prev = search.prev;
+        node.next = search;
+        search.prev.next = node;
+        search.prev = node;
+        size++;
+    }
     @Override
     public void addFirst(E value) {
 
@@ -72,80 +96,6 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
     }
 
     @Override
-    public E remove() {
-        if(isEmpty())
-            throw new NoSuchElementException();
-
-        Node<E> node = head;
-        E returnData = (E)head.data;
-        size--;
-
-        if(isEmpty()){
-            head = null;
-            tail = null;
-            return returnData;
-        }
-
-        head = head.next;
-        head.prev = null;
-        return returnData;
-    }
-
-
-    @Override
-    public int lastIndexOf(Object o) {
-        Node<E> node = tail;
-        for(int index = size-1; index >=0; index--){
-            if(node.data.equals(o))
-                return index;
-
-            node = node.prev;
-        }
-        throw new NoSuchElementException("없는 요소입니다.");
-    }
-
-    @Override
-    public <E> E[] toArray(E[] a) {
-
-        int iterLength;
-        if(size <= a.length)
-            iterLength = size;
-        else
-            iterLength = a.length;
-
-        Node<E> node = head;
-        for (int i = 0; i < iterLength; i++) {
-            a[i] = (E) node.data;
-            node = node.next;
-        }
-        return a;
-    }
-
-    @Override
-    public boolean add(E value) {
-        addLast(value);
-        return true;
-    }
-
-    @Override
-    public void add(int index, E value) {
-        if(index < 0 || index > size)
-            throw new IndexOutOfBoundsException("부적절한 인덱스");
-
-        if(index == size){
-            add(value);
-            return;
-        }
-        Node<E> node = new Node<>(value);
-        Node search = search(index);
-        node.prev = search.prev;
-        node.next = search;
-        search.prev.next = node;
-        search.prev = node;
-        size++;
-    }
-
-    @Override
     public E remove(int index) {
         Node search = search(index);
         E returnData = (E)search.data;
@@ -180,6 +130,39 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
         return true;
     }
 
+
+    @Override
+    public E remove() {
+        if(isEmpty())
+            throw new NoSuchElementException();
+
+        Node<E> node = head;
+        E returnData = (E)head.data;
+        size--;
+
+        if(isEmpty()){
+            head = null;
+            tail = null;
+            return returnData;
+        }
+
+        head = head.next;
+        head.prev = null;
+        return returnData;
+    }
+
+
+    @Override
+    public int lastIndexOf(Object o) {
+        Node<E> node = tail;
+        for(int index = size-1; index >=0; index--){
+            if(node.data.equals(o))
+                return index;
+
+            node = node.prev;
+        }
+        throw new NoSuchElementException("없는 요소입니다.");
+    }
     @Override
     public E get(int index) {
         return (E)search(index).data;
@@ -203,14 +186,6 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
         return false;
     }
 
-
-    /**
-     * 예외처리를 contains로 안해주는 이유
-     * 어차피 처음부터 요소를 찾으려면 반복문을 돌려야함.
-     * 예외를 처리하는 로직이랑, 인덱스를 반환하는 함수의 로직이랑 겹침.
-     * 예외를 처리하는 함수를 호출하고 함수를 수행하면 2배의 수행시간이 걸림.
-     * 그러므로 함수를 수행하면서 같이 예외를 처리함.
-     */
     @Override
     public int indexOf(Object value) {
         if(isEmpty())
@@ -240,6 +215,31 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
         return false;
     }
 
+    @Override
+    public <E> E[] toArray(E[] a) {
+
+        int iterLength;
+        if(size <= a.length)
+            iterLength = size;
+        else
+            iterLength = a.length;
+
+        Node<E> node = head;
+        for (int i = 0; i < iterLength; i++) {
+            a[i] = (E) node.data;
+            node = node.next;
+        }
+        return a;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return toArray((E[]) new Object[size]);
+    }
+
+
+
+
     /**
      * clear 함수
      * for문을 돌려서 매 요소마다 null을 선언해주는것과
@@ -262,10 +262,6 @@ public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E
         size = 0;
     }
 
-    @Override
-    public Object[] toArray() {
-        return toArray((E[]) new Object[size]);
-    }
 
     class Node<E> {
         E data;

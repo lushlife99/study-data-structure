@@ -7,7 +7,11 @@ public class Main {
 //        ListTest.arrayListTest();
 //        ListTest.linkedListTest();
 
-        ListTest.doubleLinkedListTest();
+        ArrayList<Integer> list = new ArrayList<>();
+        Object o = new Object();
+        o = 9;
+
+
 
     }
 
@@ -121,7 +125,12 @@ class ListTest{
 
 
         print("remove() Test. return data = "+ myLinkedList.remove(), myLinkedList);
-        print("remove(index) Test. index = "+index+" return data = "+ myLinkedList.remove(11), myLinkedList);
+        int size = myLinkedList.size();
+
+        for(int i = 0; i < size; i++){
+            print("remove(index) Test. index = "+index+" return data = "+ myLinkedList.remove(0), myLinkedList);
+        }
+
         print("remove(Object) Test. Object = "+o+ " return data = "+myLinkedList.remove(o), myLinkedList);
         System.out.println("**************************************** Test Finish ****************************************\n");
     }

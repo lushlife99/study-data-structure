@@ -1,4 +1,4 @@
-public interface CustomDoubleLinkedLst<E> {
+public interface CustomDoubleLinkedLst<E> extends MyList<E>{
     MyDoubleLinkedList.Node search(int index);
     public void addFirst(E value);
     public void addLast(E value);
