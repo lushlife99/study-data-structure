@@ -1,6 +1,10 @@
+package List;
+
+import List.CustomDoubleLinkedLst;
+
 import java.util.NoSuchElementException;
 
-public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E>{
+public class MyDoubleLinkedList<E> implements MyList<E>, CustomDoubleLinkedLst<E> {
 
 
     private Node head;

@@ -1,4 +1,6 @@
-public interface CustomArrayList<E> extends MyList<E>{
+package List;
+
+public interface CustomArrayList<E> extends MyList<E> {
     void resize();
     void addLast(E value);
     void addFirst(E value);

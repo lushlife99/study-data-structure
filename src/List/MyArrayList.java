@@ -1,14 +1,13 @@
+package List;
+
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 public class MyArrayList<E> implements CustomArrayList<E> {
 
     private E[] list;
     private int size;
 
-    MyArrayList(){
+    public MyArrayList(){
         list = (E[]) new Object[10];
         size = 0;
     }

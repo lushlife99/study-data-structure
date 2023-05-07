@@ -1,3 +1,5 @@
+package Queue;
+
 public interface MyQueue<E> {
     boolean offer(E e);
     E poll();

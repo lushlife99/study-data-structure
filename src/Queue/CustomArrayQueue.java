@@ -1,3 +1,5 @@
+package Queue;
+
 public interface CustomArrayQueue<E> extends MyQueue<E> {
     void resize(int newCapacity);
     E remove();

@@ -1,6 +1,10 @@
+package List;
+
+import List.CustomLinkedList;
+
 import java.util.NoSuchElementException;
 
-public class MyLinkedList<E> implements CustomLinkedList<E>{
+public class MyLinkedList<E> implements CustomLinkedList<E> {
 
     private Node head;
     private Node tail;

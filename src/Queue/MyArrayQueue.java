@@ -1,4 +1,7 @@
-import java.sql.Array;
+package Queue;
+
+import Queue.CustomArrayQueue;
+
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -10,7 +13,7 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
     private int front;
     private int rear;
 
-    MyArrayQueue(){
+    public MyArrayQueue(){
         array = new Object[10];
         size = 0;
         front = 0;
