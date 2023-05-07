@@ -4,12 +4,7 @@ import java.util.List;
 
 public class Main {
     public static void main (String [] args) throws IOException {
-//        ListTest.arrayListTest();
-//        ListTest.linkedListTest();
-
-        ArrayList<Integer> list = new ArrayList<>();
-        Object o = new Object();
-        o = 9;
+        ListTest.arrayQueueTest();
 
 
 
@@ -21,6 +16,18 @@ public class Main {
 
 class ListTest{
     public static void print(String testName, MyList c) throws IOException{
+        Object[] array = c.toArray();
+
+        System.out.println(testName);
+        System.out.printf("사이즈 : "+c.size());
+        System.out.printf(", 요소 : ");
+        for (Object o : array) {
+            System.out.printf(o+" ");
+        }
+        System.out.println("\n");
+    }
+
+    public static void print(String testName, MyQueue c) throws IOException{
         Object[] array = c.toArray();
 
         System.out.println(testName);
@@ -177,6 +184,23 @@ class ListTest{
         print("remove(index) Test. index = "+index+" return data = "+ myLinkedList.remove(11), myLinkedList);
         print("remove(Object) Test. Object = "+o+ " return data = "+myLinkedList.remove(o), myLinkedList);
         System.out.println("**************************************** Test Finish ****************************************\n");
+    }
+
+    public static void arrayQueueTest() throws IOException{
+        MyArrayQueue<Integer> myArrayQueue = new MyArrayQueue<>();
+        for(int i = 0; i < 10; i++){
+            myArrayQueue.offer(i);
+        }
+        print("**************************************** DoubleLinkedList Test 초기 값 ****************************************", myArrayQueue);
+
+        print("element() Test. returnData : "+ myArrayQueue.element(), myArrayQueue);
+        print("peek() Test. returnData : "+ myArrayQueue.peek(), myArrayQueue);
+        print("poll() Test. returnData : "+ myArrayQueue.poll(), myArrayQueue);
+        print("remove() Test. returnData : "+ myArrayQueue.remove() , myArrayQueue);
+        myArrayQueue.clear();
+        print("clear() Test. " , myArrayQueue);
+
+
     }
 }
 
