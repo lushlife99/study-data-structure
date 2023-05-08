@@ -26,8 +26,8 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
         if(size == array.length - 1){
             resize(array.length * 2);
         }
-
-        array[++rear % array.length] = e;
+        rear = (rear+1) % array.length;
+        array[rear] = e;
         size++;
 
         return true;
@@ -42,7 +42,6 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
         for (int i = 1, j = front + 1; i <= size; i++, j++) {
             newArray[i] = array[j % arrayCapacity];
         }
-        this.array = null;
         this.array = newArray;
 
         front = 0;
@@ -54,8 +53,9 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
         if(isEmpty())
             return null;
 
-        E returnData = (E)array[++front% array.length];
-        array[front % array.length] = null;
+        front = (front+1) % array.length;
+        E returnData = (E)array[front];
+        array[front] = null;
         size--;
         return returnData;
     }
