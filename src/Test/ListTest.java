@@ -4,6 +4,7 @@ import List.MyArrayList;
 import List.MyDoubleLinkedList;
 import List.MyLinkedList;
 import List.MyList;
+import Queue.MyArrayDeque;
 import Queue.MyArrayQueue;
 import Queue.MyQueue;
 
@@ -165,7 +166,7 @@ public class ListTest{
         for(int i = 0; i < 10; i++){
             myArrayQueue.offer(i);
         }
-        print("**************************************** DoubleLinkedList Test 초기 값 ****************************************", myArrayQueue);
+    print("**************************************** ArrayQueue Test 초기 값 ****************************************", myArrayQueue);
 
         print("element() Test. returnData : "+ myArrayQueue.element(), myArrayQueue);
         print("peek() Test. returnData : "+ myArrayQueue.peek(), myArrayQueue);
@@ -173,7 +174,14 @@ public class ListTest{
         print("remove() Test. returnData : "+ myArrayQueue.remove() , myArrayQueue);
         myArrayQueue.clear();
         print("clear() Test. " , myArrayQueue);
+    }
 
-
+    public static void arrayDequeTest() throws IOException{
+        MyArrayDeque<Integer> myArrayDeque = new MyArrayDeque<>();
+        for(int i = 0; i < 10; i++){
+            myArrayDeque.offer(i);
+        }
+        print("**************************************** ArrayDeque Test 초기 값 ****************************************", myArrayDeque);
+        print("contain() Test. Object = 9. returnData : "+Boolean.toString(myArrayDeque.contains(Integer.valueOf(9))), myArrayDeque);
     }
 }

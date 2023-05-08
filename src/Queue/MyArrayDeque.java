@@ -23,7 +23,7 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
         int arrayCapacity = array.length;
         Object[] newArray = new Object[newCapacity];
 
-        int count = 0;
+        int count = 1;
         for (int i = front + 1; count <= size; i++) {
             newArray[count++] = array[i % arrayCapacity];
         }
@@ -36,7 +36,9 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
 
     @Override
     public boolean offerLast(E item) {
-        if(size - 1 == array.length)
+
+
+        if(size == array.length - 1)
             resize(array.length * 2);
 
         rear = (rear+1) % array.length;
@@ -47,7 +49,7 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
 
     @Override
     public boolean offerFirst(E item) {
-        if(size - 1 == array.length)
+        if(size == array.length - 1)
             resize(array.length * 2);
         array[front--] = item;
         if(front < 0)
@@ -215,7 +217,7 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
 
         return a;
     }
-    
+
     @Override
     public Object[] toArray() {
         return toArray(new Object[size]);
