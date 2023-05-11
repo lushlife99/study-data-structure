@@ -1,10 +1,8 @@
 package Queue;
 
-import Queue.LinkedListQueue;
-
 import java.util.NoSuchElementException;
 
-public class MyLinkedListQueue<E> implements LinkedListQueue<E> {
+public class MyLinkedListQueue<E> implements CustomLinkedListQueue<E> {
     private Node<E> head;
     private Node<E> tail;
     private int size;

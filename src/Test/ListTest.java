@@ -184,4 +184,5 @@ public class ListTest{
         print("**************************************** ArrayDeque Test 초기 값 ****************************************", myArrayDeque);
         print("contain() Test. Object = 9. returnData : "+Boolean.toString(myArrayDeque.contains(Integer.valueOf(9))), myArrayDeque);
     }
+
 }

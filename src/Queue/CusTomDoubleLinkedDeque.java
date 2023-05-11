@@ -1,7 +1,5 @@
 package Queue;
 
-import java.util.Queue;
-
 public interface CusTomDoubleLinkedDeque<E> extends MyQueue<E> {
 
     boolean offerFirst(E value);

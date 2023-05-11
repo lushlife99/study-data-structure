@@ -1,8 +1,6 @@
 package Queue;
 
-import java.util.Queue;
-
-public interface LinkedListQueue<E> extends MyQueue<E> {
+public interface CustomLinkedListQueue<E> extends MyQueue<E> {
     E remove();
     E element();
     boolean isEmpty();
