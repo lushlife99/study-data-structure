@@ -7,6 +7,7 @@ import List.MyList;
 import Queue.MyArrayDeque;
 import Queue.MyArrayQueue;
 import Queue.MyQueue;
+import Stack.MyStack;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -183,6 +184,25 @@ public class ListTest{
         }
         print("**************************************** ArrayDeque Test 초기 값 ****************************************", myArrayDeque);
         print("contain() Test. Object = 9. returnData : "+Boolean.toString(myArrayDeque.contains(Integer.valueOf(9))), myArrayDeque);
+    }
+
+    public static void stackTest() throws IOException {
+        MyStack<Integer> myStack = new MyStack<>();
+        for(int i = 0; i < 10; i++){
+            myStack.push(1);
+        }
+
+        for(int i = 0; i < 10; i++){
+            System.out.println(myStack.pop());
+        }
+        myStack.clear();
+        for(int i = 0; i < 10; i++){
+            myStack.push(1);
+        }
+        for(int i = 0; i < 10; i++){
+            System.out.println(myStack.pop());
+        }
+
     }
 
 }

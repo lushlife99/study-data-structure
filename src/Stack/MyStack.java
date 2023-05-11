@@ -12,10 +12,12 @@ public class MyStack<E> implements StackInterface<E> {
 
     private void resize(){
         if(size == array.length) {
-            E[] newArray = (E[]) new Object[array.length * 2];
+            int newCapacity = Math.max(array.length*2, 64);
+            E[] newArray = (E[]) new Object[newCapacity];
             for (int i = 0; i < size; i++) {
                 newArray[i] = array[i];
             }
+            array = newArray;
             return;
         }
 
@@ -40,7 +42,10 @@ public class MyStack<E> implements StackInterface<E> {
         if(empty())
             return null;
 
-        return array[--size];
+        E returnData = array[--size];
+        array[size] = null;
+        resize();
+        return returnData;
     }
 
     @Override
@@ -71,6 +76,7 @@ public class MyStack<E> implements StackInterface<E> {
         for(int i = 0; i < size; i++){
             array[i] = null;
         }
+
         size = 0;
         array = (E[])new Object[0];
     }
