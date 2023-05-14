@@ -35,15 +35,14 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
 
     @Override
     public void resize(int newCapacity) {
-        int arrayCapacity = array.length;
 
         Object[] newArray = new Object[newCapacity];
 
-        for (int i = 1, j = front + 1; i <= size; i++, j++) {
-            newArray[i] = array[j % arrayCapacity];
-        }
-        this.array = newArray;
+        int idx = 1;
+        for (int i = front+1; idx <= size; i++)
+            newArray[idx++] = array[i % array.length];
 
+        this.array = newArray;
         front = 0;
         rear = size;
     }
@@ -57,6 +56,8 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
         E returnData = (E)array[front];
         array[front] = null;
         size--;
+        if(size < array.length/2 && 10 < array.length/2)
+            resize(array.length/2);
         return returnData;
     }
 
@@ -67,6 +68,7 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
 
         return poll();
     }
+
     @Override
     public E peek() {
         if(isEmpty())
@@ -108,7 +110,9 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
 
     @Override
     public void clear() {
-        array = new Object[10];
+        for(int i = front+1; i% array.length != front; i++)
+            array[i%array.length] = null;
+
         size = 0;
         front = 0;
         rear = 0;
@@ -121,31 +125,15 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
 
     @Override
     public <T> T[] toArray(T[] a) {
-        T[] returnData;
-        if(a.length < size){
-            if(front <= rear)
-                return (T[]) Arrays.copyOfRange(array, front + 1, rear + 1, a.getClass());
+        int iterSize = size;
+        if(a.length < size)
+          iterSize = a.length;
 
-            returnData = (T[]) Arrays.copyOfRange(array, 0, size, a.getClass());
-            int rearlength = array.length - 1 - front;
-            if(rearlength > 0) {
-                System.arraycopy(array, front + 1, returnData, 0, rearlength);
-            }
-            System.arraycopy(array, 0, returnData, rearlength, rear + 1);
-            return returnData;
-        }
 
-        if(front <= rear) {
-            System.arraycopy(array, front + 1, a, 0, size);
-        }
+        int idx = 0;
+        for(int i = front+1; idx < iterSize && i != rear+1; i++)
+            a[idx++] = (T)array[i % array.length];
 
-        else {
-            int rearlength = array.length - 1 - front;
-            if(rearlength > 0) {
-                System.arraycopy(array, front + 1, a, 0, rearlength);
-            }
-            System.arraycopy(array, 0, a, rearlength, rear + 1);
-        }
         return a;
     }
 

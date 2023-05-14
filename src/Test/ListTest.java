@@ -11,6 +11,7 @@ import Stack.MyStack;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListTest{
     public static void print(String testName, MyList c) throws IOException {
@@ -164,7 +165,7 @@ public class ListTest{
 
     public static void arrayQueueTest() throws IOException{
         MyArrayQueue<Integer> myArrayQueue = new MyArrayQueue<>();
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 7; i++){
             myArrayQueue.offer(i);
         }
     print("**************************************** ArrayQueue Test 초기 값 ****************************************", myArrayQueue);
@@ -173,8 +174,90 @@ public class ListTest{
         print("peek() Test. returnData : "+ myArrayQueue.peek(), myArrayQueue);
         print("poll() Test. returnData : "+ myArrayQueue.poll(), myArrayQueue);
         print("remove() Test. returnData : "+ myArrayQueue.remove() , myArrayQueue);
+
+        int length = 4;
+        Integer[] newArray1 = new Integer[length];
+        for(int i = 0; i <newArray1.length; i++)
+            newArray1[i] = 1;
+
+        Integer[] array = myArrayQueue.toArray(newArray1);
+
+        length = 10;
+        for(int i = 0; i < array.length; i++)
+            System.out.print(array[i]+" ");
+        System.out.println();
+
+        Integer[] newArray2 = new Integer[length];
+        for(int i = 0; i <length; i++)
+            newArray2[i] = 1;
+
+        array = myArrayQueue.toArray(newArray2);
+
+        for(int i = 0; i < array.length; i++)
+            System.out.print(array[i]+" ");
+
+        System.out.println();
+
+        length = 15;
+        Integer[] newArray3 = new Integer[length];
+        for(int i = 0; i <newArray3.length; i++)
+            newArray3[i] = 1;
+
+        array = myArrayQueue.toArray(newArray3);
+
+        for(int i = 0; i < array.length; i++)
+            System.out.print(array[i]+" ");
+        System.out.println();
+
         myArrayQueue.clear();
         print("clear() Test. " , myArrayQueue);
+        System.out.println("rear < front로 바꾸기");
+        for(int i = 0; i < 9; i++){
+            myArrayQueue.offer(i);
+        }
+        for(int i = 0; i < 9; i++){
+            myArrayQueue.poll();
+        }
+        for(int i = 0; i < 7; i++)
+            myArrayQueue.offer(i);
+
+        print("rear < front. currentArray : ", myArrayQueue);
+
+        length = 4;
+        Integer[] newArray4 = new Integer[length];
+        for(int i = 0; i <newArray4.length; i++)
+            newArray4[i] = 1;
+
+        array = myArrayQueue.toArray(newArray4);
+
+
+        for(int i = 0; i < array.length; i++)
+            System.out.print(array[i]+" ");
+        System.out.println();
+
+        length = 10;
+        Integer[] newArray5 = new Integer[length];
+        for(int i = 0; i <length; i++)
+            newArray5[i] = 1;
+
+        array = myArrayQueue.toArray(newArray5);
+
+        for(int i = 0; i < array.length; i++)
+            System.out.print(array[i]+" ");
+
+        System.out.println();
+
+        length = 15;
+        Integer[] newArray6 = new Integer[length];
+        for(int i = 0; i <newArray6.length; i++)
+            newArray6[i] = 1;
+
+        array = myArrayQueue.toArray(newArray6);
+
+        for(int i = 0; i < array.length; i++)
+            System.out.print(array[i]+" ");
+        System.out.println();
+
     }
 
     public static void arrayDequeTest() throws IOException{
