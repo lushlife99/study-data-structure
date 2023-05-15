@@ -41,6 +41,7 @@ public class MyDoubleLinkedDeque<E> implements CusTomDoubleLinkedDeque<E>{
         node.prev = tail;
         tail = node;
         size++;
+
         return true;
     }
 

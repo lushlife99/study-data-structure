@@ -73,14 +73,11 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
         E returnData = (E)array[front];
         array[front] = null;
         size--;
+        if(size < array.length/4 && array.length > 10)
+            resize(Math.max(array.length/2 , 10));
+
 
         return returnData;
-    }
-
-    @Override
-    public E peek() {
-
-        return (E)array[(front+1) % array.length];
     }
 
     @Override
@@ -92,19 +89,6 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
         return poll();
     }
 
-    @Override
-    public E remove() {
-
-        return removeFirst();
-    }
-
-    @Override
-    public E removeFirst() {
-        if(isEmpty())
-            throw new NoSuchElementException("비어있음");
-
-        return pollFirst();
-    }
 
     @Override
     public E pollLast() {
@@ -116,7 +100,20 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
         array[rear] = null;
         rear = (rear + array.length - 1) % array.length;
         size--;
+
+        if(size < array.length/4 && array.length > 10)
+            resize(Math.max(array.length/2 , 10));
+
         return returnData;
+    }
+
+
+    @Override
+    public E removeFirst() {
+        if(isEmpty())
+            throw new NoSuchElementException("비어있음");
+
+        return pollFirst();
     }
 
     @Override
@@ -125,6 +122,19 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
             throw new NoSuchElementException("비어있음");
 
         return pollLast();
+    }
+
+    @Override
+    public E remove() {
+
+        return removeFirst();
+    }
+
+
+    @Override
+    public E peek() {
+
+        return (E)array[(front+1) % array.length];
     }
 
     @Override
@@ -155,7 +165,6 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
             throw new NoSuchElementException("비어있음");
 
         return (E)array[rear];
-
     }
 
     @Override
@@ -171,7 +180,6 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
             if(array[i % array.length].equals(value))
                 return true;
         }
-
         return false;
     }
 
@@ -184,36 +192,13 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
 
     @Override
     public <T> T[] toArray(T[] a) {
-        final T[] res;
-        if(a.length < size) {
+        int iterSize = size;
+        if(a.length < size)
+            iterSize = a.length;
 
-            if(front <= rear) {
-                return (T[]) Arrays.copyOfRange(array, front + 1, rear + 1, a.getClass());
-            }
-
-            res = (T[]) Arrays.copyOfRange(array, 0, size, a.getClass());
-            int rearlength = array.length - 1 - front;    // 뒷 부분의 요소 개수
-
-            if(rearlength > 0) {
-                System.arraycopy(array, front + 1, res, 0, rearlength);
-            }
-
-            System.arraycopy(array, 0, res, rearlength, rear + 1);
-
-            return res;
-        }
-
-        if(front <= rear) {
-            System.arraycopy(array, front + 1, a, 0, size);
-        }
-
-        else {
-            int rearlength = array.length - 1 - front;
-            if(rearlength > 0) {
-                System.arraycopy(array, front + 1, a, 0, rearlength);
-            }
-            System.arraycopy(array, 0, a, rearlength, rear + 1);
-        }
+        int idx = 0;
+        for(int i = front+1; idx < iterSize && i != rear+1; i++)
+            a[idx++] = (T)array[i % array.length];
 
         return a;
     }
@@ -227,4 +212,6 @@ public class MyArrayDeque<E> implements CustomArrayDeque<E>{
     public int size() {
         return size;
     }
+
+
 }

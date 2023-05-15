@@ -68,24 +68,18 @@ public class MyLinkedListQueue<E> implements CustomLinkedListQueue<E> {
 
     @Override
     public void clear() {
-        head = null;
-        tail = null;
-        size = 0;
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
         Node<E> node = head;
-        int iterLength = a.length;
-        if(size < a.length)
-            iterLength = size;
-
-        for(int i = 0; i < iterLength; i++){
-            a[i] = (T)node.data;
-            node = node.next;
+        Node<E> nextNode;
+        while(node!= null){
+            node.data = null;
+            nextNode = node.next;
+            node.next = null;
+            node = nextNode;
         }
-        return a;
+        size = 0;
+        head = tail = null;
     }
+
 
     @Override
     public boolean offer(E e) {
@@ -101,13 +95,23 @@ public class MyLinkedListQueue<E> implements CustomLinkedListQueue<E> {
         return true;
     }
 
-
-
-
-
     @Override
     public Object[] toArray() {
         return toArray(new Object[size]);
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        Node<E> node = head;
+        int iterLength = a.length;
+        if(size < a.length)
+            iterLength = size;
+
+        for(int i = 0; i < iterLength; i++){
+            a[i] = (T)node.data;
+            node = node.next;
+        }
+        return a;
     }
 
     @Override
