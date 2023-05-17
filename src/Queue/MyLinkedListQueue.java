@@ -102,16 +102,17 @@ public class MyLinkedListQueue<E> implements CustomLinkedListQueue<E> {
 
     @Override
     public <T> T[] toArray(T[] a) {
+        T[] clone = a.clone();
         Node<E> node = head;
         int iterLength = a.length;
         if(size < a.length)
             iterLength = size;
 
         for(int i = 0; i < iterLength; i++){
-            a[i] = (T)node.data;
+            clone[i] = (T)node.data;
             node = node.next;
         }
-        return a;
+        return clone;
     }
 
     @Override

@@ -113,6 +113,7 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
         for(int i = front+1; i% array.length != front; i++)
             array[i%array.length] = null;
 
+        array = new Object[10];
         size = 0;
         front = 0;
         rear = 0;
@@ -125,16 +126,16 @@ public class MyArrayQueue<E> implements CustomArrayQueue<E> {
 
     @Override
     public <T> T[] toArray(T[] a) {
+        T[] returnData = a.clone();
         int iterSize = size;
         if(a.length < size)
           iterSize = a.length;
 
-
         int idx = 0;
-        for(int i = front+1; idx < iterSize && i != rear+1; i++)
-            a[idx++] = (T)array[i % array.length];
+        for(int i = front+1; idx < iterSize; i++)
+            returnData[idx++] = (T)array[i % array.length];
 
-        return a;
+        return returnData;
     }
 
 }

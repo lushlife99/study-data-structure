@@ -11,8 +11,9 @@ public class MyStack<E> implements StackInterface<E> {
     }
 
     private void resize(){
+
         if(size == array.length) {
-            int newCapacity = Math.max(array.length*2, 64);
+            int newCapacity = Math.max(array.length * 2, 10);
             E[] newArray = (E[]) new Object[newCapacity];
             for (int i = 0; i < size; i++) {
                 newArray[i] = array[i];
@@ -21,7 +22,7 @@ public class MyStack<E> implements StackInterface<E> {
             return;
         }
 
-        if(size < array.length / 2){
+        if(size < array.length / 2 && array.length > 10){
             E[] newArray = (E[]) new Object[array.length / 2];
             for(int i = 0; i < size; i++){
                 newArray[i] = array[i];
@@ -58,11 +59,10 @@ public class MyStack<E> implements StackInterface<E> {
 
     @Override
     public int search(Object value) {
-        for(int i = 0; i < size; i++){
+        for(int i = size-1; i>=0; i--) {
             if(array[i].equals(value))
-                return size - i;
+                return i;
         }
-
         return -1;
     }
 
