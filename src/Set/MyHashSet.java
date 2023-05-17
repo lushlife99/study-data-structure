@@ -2,6 +2,8 @@ package Set;
 
 import Interface_form.Set;
 
+import java.util.Arrays;
+
 public class MyHashSet<E> implements Set<E> {
 
     private final static int DEFAULT_CAPACITY = 1 << 4;
@@ -102,6 +104,7 @@ public class MyHashSet<E> implements Set<E> {
                 else
                     prev.next = node.next;
 
+                size--;
                 return returnData;
             }
             prev = node;
@@ -115,30 +118,40 @@ public class MyHashSet<E> implements Set<E> {
 
     @Override
     public Object[] toArray() {
-        return toArray(new Object[size]);
+
+        if (table == null) {
+            return null;
+        }
+        Object[] ret = new Object[size];
+        int index = 0;	// 인덱스 변수를 따로 둔다.
+
+        for (int i = 0; i < table.length; i++) {
+
+            Node<E> node = table[i];
+
+            // 해당 인덱스에 연결 된 모든 노드를 하나씩 담는다.
+            while (node != null) {
+                ret[index] = node.key;
+                index++;
+                node = node.next;
+            }
+        }
+
+        return ret;
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        T[] clone = a.clone();
-        int totalSize = size;
-        if(a.length < size)
-            totalSize = a.length;
 
-        int cnt = 0;
-        for(int i = 0; i < table.length; i++){
-            if(table[i] != null){
-                Node<E> node = table[i];
+        Object[] copy = toArray();	// toArray()통해 먼저 배열을 얻는다.
 
-                while(node != null){
-                    //clone[cnt++] = new Object(node.key);
-                    if(node.next != null)
-                        node = node.next;
+        // 들어온 배열이 copy된 요소 개수보다 작을경우 size에 맞게 늘려주면서 복사한다.
+        if (a.length < size)
+            return (T[]) Arrays.copyOf(copy, size, a.getClass());
 
-                    break;
-                }
-            }
-        }
+        // 그 외에는 copy 배열을 a에 0번째부터 채운다.
+        System.arraycopy(copy, 0, a, 0, size);
+
         return a;
     }
 
