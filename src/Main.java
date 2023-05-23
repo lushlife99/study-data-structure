@@ -1,11 +1,27 @@
-import Set.MyHashSet;
 
 public class Main{
     public static void main(String[] args) {
-        MyHashSet<Integer> myHashSet = new MyHashSet<Integer>();
-        for(int i = 0; i < 10; i++){
-            Integer integer = i*1512%13;
-            myHashSet.add(integer);
-        }
+        String s = "abcd";
+        s += "efgh";
+        System.out.println(s);
+
+
+    }
+}
+
+class B{
+    int num;
+}
+
+class A implements Comparable<A>{
+    int num;
+
+    public A(int num){
+        this.num = num;
+    }
+
+    @Override
+    public int compareTo(A o) {
+        return this.num - o.num;
     }
 }

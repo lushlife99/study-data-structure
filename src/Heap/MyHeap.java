@@ -76,7 +76,6 @@ public class MyHeap<E> {
         }
     }
     private void siftUpComparable(int idx, E target) {
-
         Comparable<? super E> comp = (Comparable<? super E>) target;
 
         while(idx > 1){
